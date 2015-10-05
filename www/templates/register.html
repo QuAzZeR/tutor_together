@@ -1,0 +1,42 @@
+<ion-view ng-controller="RegisterController" title="Register">
+
+    <ion-content>
+        <ion-list>
+            <label class="item item-input">
+                <input type="text" placeholder="Age">
+            </label>
+            <label class="item item-input">
+                <input type="text" placeholder="Phone Number">
+            </label>
+            <label class="item item-input item-select">
+                <div class="input-label">
+                    Status
+                </div>
+                <select name="Status" id ="Status" ng-model="choice.select_choice">
+                    <option ng-repeat="option in choice.select_status" value="{{option}}">{{option}} </option>
+                    
+                </select>
+            </label>
+            <div ng-repeat="group in groups" ng-show="choice.select_choice == 'teacher'">
+
+                <ion-item class="item-stable" ng-click="toggleGroup(group)" ng-class="{active: isGroupShown(group)}">
+                    <i class="icon" ng-class="isGroupShown(group) ? 'ion-minus' : 'ion-plus'"></i> &nbsp; {{group.name}}
+                </ion-item>
+                
+                <ion-item class="item-accordion" ng-repeat="item in group.items" ng-show="isGroupShown(group)">
+                        <label class="checkbox" >
+                            <input type="checkbox" ng-model="item.selected" ng-true-value="true" ng-false-value="false">
+                        </label>
+                        {{item.level}}
+                   
+                </ul>
+            </div>
+
+            <div class="padding">
+                <!-- <button class="button button-block button-positive" style="background-color:#3cd5af">Submit</button> -->
+                <button ng-click="register()" class="button button-block submit-button">Submit</button>
+            </div>
+        </ion-list>
+
+    </ion-content>
+</ion-view>
