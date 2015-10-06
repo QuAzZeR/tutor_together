@@ -4,8 +4,8 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 
-var app = angular.module('starter', ['ionic', 'ngStorage', 'ngCordova'])
-var PostUrl="http://10.2.32.177:8000/login";
+var app = angular.module('starter', ['ionic', 'ngStorage', 'ngCordova','Service'])
+var PostUrl="http://10.2.32.121:8000/login";
 app.run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -42,11 +42,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
             controller: 'RegisterController'
         });
 
-    $urlRouterProvider.otherwise('/register');
+    $urlRouterProvider.otherwise('/login');
 });
 
-app.controller("LoginController", function($scope, $cordovaOauth, $localStorage, $location,$http) {
-
+app.controller("LoginController", function($scope, $cordovaOauth, $localStorage, $location,$http,UserRegisterService) {
+    
     $scope.login = function() {
         
         $cordovaOauth.facebook("891866854235670", ["email"]).then(function(result) {
@@ -56,9 +56,12 @@ app.controller("LoginController", function($scope, $cordovaOauth, $localStorage,
                 var sendData = result.data;
                 sendData.site = 'facebook';
                 
+                
             $http.post(PostUrl, sendData).then(function(response) {
-                if(response.data == "go_regis")
-                    $location.path("/register").search(sendData);
+                if(response.data == "go_regis"){
+                    UserRegisterService.setInfo(sendData);
+                    $location.path("/register");
+                }
                 else if(response.data == "go_profile")
                     $location.path("/profile");
             });
@@ -114,12 +117,13 @@ app.controller("FeedController", function($scope, $http, $localStorage, $locatio
 });
 
 
-app.controller('RegisterController', function($scope) {
+app.controller('RegisterController', function($scope,UserRegisterService) {
     $scope.choice = {
         select_status: ["student","teacher"],
         select_choice: "student"
     };
-
+    $scope.profileData = "eiei"
+    
     $Subject = ["Math","Physics","Chemistry","Biology"];
   $scope.groups = [];
   for (var i=0; i<4; i++) {
@@ -135,15 +139,22 @@ app.controller('RegisterController', function($scope) {
   $scope.toggleGroup = function(group) {
     if ($scope.isGroupShown(group)) {
       $scope.shownGroup = null;
-    } else {
-      $scope.shownGroup = group;
-    }
+    } else {'
+          $scope.shownGroup = group;
+        }'
   };
   $scope.isGroupShown = function(group) {
     return $scope.shownGroup === group;
   };
   $scope.register = function() {
     console.log($scope.profileData);
+
+    a = UserRegisterService.getInfo();
+    $scope.profileData.pic_profile = a.url;
+    $scope.profileData.authen = {site: , id: };
+    $scope.profileData.phone =""
+    $scope.profileData.teach_subjects = [{level: , subject: }];
+    $scope.profileData.isTutor = true||false;
   }
   
 });
