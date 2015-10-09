@@ -1,6 +1,8 @@
 angular.module('Service',[]).factory('UserRegisterService',function(){
 	var UserRegisterService={};
-	UserRegisterService.getInfo = function(){
+
+	UserRegisterService.getInfoForRegister = function(){
+		console.log(UserRegisterService.Info)
 		return UserRegisterService.Info;
 	}
 	UserRegisterService.setInfo = function(info){
