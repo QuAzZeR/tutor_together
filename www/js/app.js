@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 
 var app = angular.module('starter', ['ionic', 'ngStorage', 'ngCordova','Service'])
-var PostUrl="http://10.2.37.19:8000";
+var PostUrl="http://10.2.32.102:8000";
 app.run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -26,16 +26,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
             templateUrl: 'templates/login.html',
             controller: 'LoginController'
         })
-        // .state('profile', {
-        //     url: '/profile',
-        //     templateUrl: 'templates/profile.html',
-        //     controller: 'ProfileController'
-        // })
-        // .state('feed', {
-        //     url: '/feed',
-        //     templateUrl: 'templates/feed.html',
-        //     controller: 'FeedController'
-        // })
+        .state('profile', {
+            url: '/profile',
+            templateUrl: 'templates/profile.html',
+            controller: 'ProfileController'
+        })
         .state('register',{
             url: '/register',
             templateUrl: 'templates/register.html',
@@ -53,25 +48,33 @@ app.controller("LoginController", function($scope, $cordovaOauth, $localStorage,
             var sendData = result.data;
                 sendData.site = 'facebook';
                 UserRegisterService.setInfo(sendData);
-                $location.path("/register")
-         })
-}
-
+                $http.post(PostUrl+"/login", sendData).then(function(response) {
+                    if(response.data == "go_regis"){
+                       $location.path("/register");
+                   }
+                   else {
+                      $location.path("/profile");      
+                   }
+               });
+                
+         });
+     }
 });
 
 // app.controller("LoginController", function($scope, $cordovaOauth, $localStorage, $location,$http,UserRegisterService) {
-//
+
 //     $scope.login = function() {
-//
+
 //         $cordovaOauth.facebook("891866854235670", ["email"]).then(function(result) {
 //             $localStorage.accessToken = result.access_token;
 //             $http.get("https://graph.facebook.com/v2.2/me", { params: { access_token: $localStorage.accessToken, fields: "id,name,gender,email,picture", format: "json" }}).then(function(result) {
 //                 $scope.profileData = result.data;
 //                 var sendData = result.data;
 //                 sendData.site = 'facebook';
+//                 UserRegisterService.setInfo(sendData);
 //             $http.post(PostUrl+"/login", sendData).then(function(response) {
 //                 if(response.data == "go_regis"){
-//                     UserRegisterService.setInfo(sendData);
+                    
 //                     $location.path("/register");
 //                 }
 //                 else {
@@ -79,55 +82,18 @@ app.controller("LoginController", function($scope, $cordovaOauth, $localStorage,
 //                 }
 //             });
 //             },function(error){
-//
+
 //             });
-//
+
 //         }, function(error) {
 //             alert("There was a problem signing in!  See the console for logs");
 //             console.log(error);
 //         });
 //     };
-//
-// });
-
-// app.controller("ProfileController", function($scope, $http, $localStorage, $location) {
-
-//     $scope.init = function() {
-//         if($localStorage.hasOwnProperty("accessToken") === true) {
-//             $http.get("https://graph.facebook.com/v2.2/me", { params: { access_token: $localStorage.accessToken, fields: "id,name,gender,location,website,picture,relationship_status", format: "json" }}).then(function(result) {
-//                 $scope.profileData = result.data;
-//             }, function(error) {
-//                 alert("There was a problem getting your profile.  Check the logs for details.");
-//                 console.log(error);
-//             });
-//         } else {
-//             alert("Not signed in");
-//             $location.path("/login");
-//         }
-//     };
 
 // });
 
-// app.controller("FeedController", function($scope, $http, $localStorage, $location) {
-//
-//     $scope.init = function() {
-//         if($localStorage.hasOwnProperty("accessToken") === true) {
-//             $http.get("https://graph.facebook.com/v2.4/me/feed", { params: { access_token: $localStorage.accessToken, format: "json" }}).then(function(result) {
-//                 $scope.feedData = result.data.data;
-//                 $http.get("https://graph.facebook.com/v2.4/me", { params: { access_token: $localStorage.accessToken, fields: "picture", format: "json" }}).then(function(result) {
-//                     $scope.feedData.myPicture = result.data.picture.data.url;
-//                 });
-//             }, function(error) {
-//                 alert("There was a problem getting your profile.  Check the logs for details.");
-//                 console.log(error);
-//             });
-//         } else {
-//             alert("Not signed in");
-//             $location.path("/login");
-//         }
-//     };
-//
-// });
+
 
 
 app.controller('RegisterController', function($scope,UserRegisterService,$http) {
@@ -164,10 +130,11 @@ app.controller('RegisterController', function($scope,UserRegisterService,$http) 
     profileData.name = tmp.name;
     profileData.gender = tmp.gender;
     profileData.email = tmp.email;
-    profileData.pic_profile = tmp.picture.data.url;
+    profileData.pic_profile = tmp.pic_profile;
     profileData.authen = {site: tmp.site, id : tmp.id};
     profileData.isTutor = ($scope.choice.select_choice == "teacher") ? true : false;
-    profileData.phone = phone;
+    profileData.tel = phone;
+    profileData.age =age;
     tmp=[]
     var count = 0;
     for (var i=0; i<4; i++) {
@@ -175,31 +142,32 @@ app.controller('RegisterController', function($scope,UserRegisterService,$http) 
              tmp[count++] = {level : $scope.groups[i].items[0].level,subject : $scope.groups[i].name}
          if($scope.groups[i].items['1'].selected)
              tmp[count++] = {level : $scope.groups[i].items[1].level,subject : $scope.groups[i].name}
-
-
     }
     profileData.teach_subjects=tmp
     return profileData;
-    //console.log($scope.age+"eiei "+$scope.phone)
-
 
   }
   $scope.register = function(age,phone) {
-    //console.log($scope.profileData);
-
-
     tmp = PostUrl+"/regis";
     console.log(tmp);
     collectData(age,phone)
      $http.post(tmp, collectData(age,phone) ).then(function(response) {
        console.log(response.data);
      });
-    //a = UserRegisterService.getInfo();
-    ////$scope.profileData.pic_profile = a.url;
-    ////$scope.profileData.authen = {site: , id: };
-    ////$scope.profileData.phone =""
-    //$scope.profileData.teach_subjects = [{level: , subject: }];
-    ////$scope.profileData.isTutor = true||false;
-  }
 
+  }
 });
+app.controller("ProfileController",function($scope,$location,$http,UserRegisterService){
+  $scope.init = function(){
+      $http.post(PostUrl+"/profile",UserRegisterService.getInfoForRegister()).then(function(response){      
+        $scope.showData = response.data;
+        $scope.showData.teach = ""
+        for(var i = 0; i < $scope.showData.teach_subjects.length ;i++){
+          if($scope.showData.teach.search($scope.showData.teach_subjects[i].subject)==-1)
+            $scope.showData.teach+= $scope.showData.teach_subjects[i].subject+" "
+        }
+      });
+
+  }
+});
+

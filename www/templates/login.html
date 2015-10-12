@@ -1,12 +1,24 @@
-<ion-view ng-controller="LoginController" title="Facebook Example">
-	
-    <ion-content>
-        <div class="padding">
-            <button ng-click="login()" class="button button-block button-balanced">Oauth Sign In</button>
-            <p>
-                Clicking the above button will initiate an official browser sign in flow with Facebook.  You
-                will be redirected to the Facebook website to enter your credentials.
-            </p>
-        </div>
-    </ion-content>
+<ion-view ng-controller="LoginController"  name="login-view">
+  <ion-content class="padding">
+  <div align="center">
+  <img  src="img/logo1.png" alt="logo" style="width:70%;height:70%;">
+  </div>
+    <div align="center">
+      <button class="button icon-left ion-social-facebook button button-positive" ng-click="login()">
+        &nbsp;
+        SIGN IN WITH FACEBOOK
+      </button>
+    </div>
+
+    <br>
+
+    <div align="center">
+      <button class="button icon-left ion-social-googleplus button button-assertive"ng-click="login()">
+        &nbsp;
+        SIGN IN WITH GOOGLE+
+      </button>
+    </div>
+  </ion-content>
 </ion-view>
+
+
