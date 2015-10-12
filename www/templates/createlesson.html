@@ -1,0 +1,77 @@
+
+<ion-view ng-controller="CreateLessonController" title="CreateLesson" ng-init="init()">
+    <ion-header-bar class="bar-stable bar-header center" style="background-color:#3cd5af;">
+        <button class="button button-icon icon ion-android-arrow-back"></button>
+        <div class="h1 title">Create Lesson</div>
+    </ion-header-bar>
+
+    <ion-content>
+
+
+      <ion-list>
+      
+        <!-- subject -->
+        <label class="item item-icon-left ion-erlenmeyer-flask item-input item-select">
+          <div class="input-label">
+            &nbsp;
+            Subject
+          </div>
+          <select>
+            <option>คณิตสาสตร์</option>
+            <option selected>วิทยาศาสตร์</option>
+            <option>ฟิสิกส์</option>
+            <option>เคมี์</option>
+            <option>ชีววิทยา</option>
+            <option>ภาษาไทย</option>
+            <option>ภาษาอังกฤษ</option>
+            <option>ภาษาต่างประเทศ</option>
+            <option>สังคมศึกษา</option>
+          </select>
+        </label>
+
+        <!-- level -->           
+        <label class="item item-icon-left ion-university item-input item-select">
+          <div class="input-label">
+            &nbsp;
+            Level
+          </div>
+          <select>
+            <option>อนุบาล</option>
+            <option>ประถมต้น</option>
+            <option>ประถมปลาย</option>
+            <option>มันธยมต้น</option>
+            <option selected>มัธยมปลาย</option>
+            
+            <option>อุดมศึกษา</option>
+            <option>อื่นๆ</option>
+
+          </select>
+        </label>
+
+        <!-- Day -->
+        <div class="item item-button-right">
+          Schedules
+          <button class="button button-clear button-positive">
+            <i class="icon ion-chevron-right"></i>
+          </button>
+        </div>
+
+        <!-- description -->
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Descriptions</span>
+          <input type="text" placeholder="text">
+        </label>
+
+      </div>
+
+      <br>
+
+              <button class="button button-outline button-positive" style="width:100%;">
+                Create
+              </button>
+    </ion-list>
+
+
+    </ion-content>
+
+</ion-view>

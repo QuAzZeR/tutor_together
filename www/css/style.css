@@ -22,3 +22,10 @@ body {
 .submit-button {
 	background-color:#3cd5af;
 }
+
+.profile-image {
+	max-height: 50%;
+	width: auto;
+	/*margin-left: auto;*/
+	/*margin-right: auto;*/
+}

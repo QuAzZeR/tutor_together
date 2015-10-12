@@ -1,13 +1,9 @@
-<ion-view ng-controller="RegisterController" title="Register">
+<ion-view ng-controller="RegisterController" title="Register" ng-init = "init()">
     <ion-header-bar class="bar-stable bar-header center" style="background-color:#3cd5af">
         <div class="h1 title">Register</div>
     </ion-header-bar>
     <ion-content>
         <ion-list>
-            <label class="item item-input">
-                <input type="text" placeholder="Age" ng-model="age">
-
-            </label>
             <label class="item item-input">
                 <input type="text" placeholder="Phone Number" ng-model = "phone">
             </label>
@@ -37,7 +33,7 @@
             <p></p>
             <div class="padding">
                 <!-- <button class="button button-block button-positive" style="background-color:#3cd5af">Submit</button> -->
-                <button ng-click="register(age,phone)" class="button button-block submit-button">Submit</button>
+                <button ng-click="register(phone)" class="button button-block submit-button">Submit</button>
             </div>
         </ion-list>
 

@@ -5,30 +5,30 @@
             <button class="button button-icon icon ion-android-create"></button>
         </ion-header-bar>
         <ion-content>
-            <img class="full-image" src="{{showData.pic_profile}}" >
+            <div align="center">
+                <img class="full-image profile-image" src="{{showData.pic_profile}}" />    
+            </div>
             <div class="list">
                 <div class="item item-icon-left" href="#">
                     <i class="icon ion-android-person"></i> {{showData.firstname}} {{showData.lastname}}
                 </div>
 
-                <div class="item item-icon-left" href="#">
-                    <i class="icon ion-female"></i> {{showData.age}} years
-                </div>
+                
 
-                <div class="item item-icon-left item-icon-right" href="#">
+                <div class="item item-icon-left" href="#">
                     <i class="icon ion-chatbubble-working"></i> {{showData.tel}}
-                    <i class="icon ion-android-call"></i>
+                    
                 </div>
 
-                <div class="item item-icon-left item-icon-right" href="#">
-                    <i class="icon ion-android-mail"></i> {{showData.email}}
-                    <i class="icon ion-android-send"></i>
-                </div>
                 <div class="item item-icon-left" href="#">
+                    <i class="icon ion-android-mail"></i> {{showData.email}}
+                    
+                </div>
+                <div class="item item-icon-left" href="#" ng-show="showData.isTutor == true">
                     <i class="icon ion-erlenmeyer-flask"></i> {{showData.teach}}
                 </div>
 
-                <a class="item item-icon-left" href="#">
+                <a class="item item-icon-left" href="#" ng-show="showData.isTutor == true">
                     <i class="icon ion-android-list"></i> Comment
                 </a>
 

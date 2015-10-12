@@ -35,8 +35,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
             url: '/register',
             templateUrl: 'templates/register.html',
             controller: 'RegisterController'
+        })
+        .state('createlesson',{
+            url: '/createlesson',
+            templateUrl: 'templates/createlesson.html',
+            controller: 'CreateLessonController'
         });
-
     $urlRouterProvider.otherwise('/login');
 });
 app.controller("LoginController", function($scope, $cordovaOauth, $localStorage, $location,$http,UserRegisterService) {
@@ -54,6 +58,25 @@ app.controller("LoginController", function($scope, $cordovaOauth, $localStorage,
                    }
                    else {
                       $location.path("/profile");      
+                   }
+               });
+                
+         });
+     }
+     $scope.createlesson = function(){
+        console.log("in createleson")
+        $localStorage.accessToken = "CAAMrJe8InhYBAIxPt9XpmPshOUKbfoLyzzXoZAy6wuTFy8xRREmzZCu8Iv4LrPuSyBJLrLfRi2r9sNuSl7DUEiJW3Sa7TZArUWmtrAcCfMG9Ity7MD43lkHb4P7stxP8JPstIWKRd830w07xWxCMAB28QZAe8g4wcwqLxZAd0VrhOZBMfZCcai7M7zVZBSumPngZD"
+        $http.get("https://graph.facebook.com/v2.2/me", { params: { access_token: $localStorage.accessToken, fields: "id,name,gender,email,picture", format: "json" }}).then(function(result) {
+            $scope.profileData = result.data;
+            var sendData = result.data;
+                sendData.site = 'facebook';
+                UserRegisterService.setInfo(sendData);
+                $http.post(PostUrl+"/login", sendData).then(function(response) {
+                    if(response.data == "go_regis"){
+                       $location.path("/register");
+                   }
+                   else {
+                      $location.path("/createlesson");      
                    }
                });
                 
@@ -97,23 +120,38 @@ app.controller("LoginController", function($scope, $cordovaOauth, $localStorage,
 
 
 app.controller('RegisterController', function($scope,UserRegisterService,$http) {
-    $scope.choice = {
-        select_status: ["student","teacher"],
-        select_choice: "student"
-    };
-    $Subject = ["Math","Physics","Chemistry","Biology"];
-
-    $scope.age;
-    $scope.phone;
+  $scope.age;
+  $scope.phone;
   $scope.groups = [];
-  for (var i=0; i<4; i++) {
-    $scope.groups[i] = {
+  $scope.choice = {
+      select_status: ["student","teacher"],
+      select_choice: "student"
+  };
+  $Subject = []
+  $level = []
+  $scope.init = function(){
+    console.log("in init")
+    $http.get(PostUrl+"/getsubjectdata").then(function(response){
+        $Subject = response.data.subjects;
+        $level = response.data.levels;
+        console.log(response.data);
+        setSubjectGroup();
+      });
+    
+    console.log($Subject);
 
-        name: $Subject[i] ,
-        items: [{level: "มัธยมต้น", selected: false}, {level: "มัธยมปลาย", selected: false}]
-
-    };
   }
+
+  var setSubjectGroup = function() {
+    for (var i=0; i<$Subject.length; i++) {
+      $scope.groups[i] = {name: $Subject[i]};
+      $scope.groups[i].items = [];
+      for(var j=0; j<$level.length; j++) {
+        $scope.groups[i].items[j] = {level: $level[j], selected: false} 
+      }
+    }
+  }
+
   $scope.toggleGroup = function(group) {
     if ($scope.isGroupShown(group)) {
       $scope.shownGroup = null;
@@ -124,7 +162,7 @@ app.controller('RegisterController', function($scope,UserRegisterService,$http) 
   $scope.isGroupShown = function(group) {
     return $scope.shownGroup === group;
   };
-  collectData = function(age,phone){
+  collectData = function(phone){
     var tmp = UserRegisterService.getInfoForRegister();
     profileData = {}
     profileData.name = tmp.name;
@@ -134,7 +172,7 @@ app.controller('RegisterController', function($scope,UserRegisterService,$http) 
     profileData.authen = {site: tmp.site, id : tmp.id};
     profileData.isTutor = ($scope.choice.select_choice == "teacher") ? true : false;
     profileData.tel = phone;
-    profileData.age =age;
+  
     tmp=[]
     var count = 0;
     for (var i=0; i<4; i++) {
@@ -147,11 +185,11 @@ app.controller('RegisterController', function($scope,UserRegisterService,$http) 
     return profileData;
 
   }
-  $scope.register = function(age,phone) {
+  $scope.register = function(phone) {
     tmp = PostUrl+"/regis";
     console.log(tmp);
     collectData(age,phone)
-     $http.post(tmp, collectData(age,phone) ).then(function(response) {
+     $http.post(tmp, collectData(phone) ).then(function(response) {
        console.log(response.data);
      });
 
@@ -169,5 +207,16 @@ app.controller("ProfileController",function($scope,$location,$http,UserRegisterS
       });
 
   }
+});
+
+app.controller("CreateLessonController",function($scope,$location,$http,UserRegisterService){
+  $scope.init = function(){
+      $http.get(PostUrl+"/getsubjectdata").then(function(response){
+        $Subject = response.data.subjects;
+        $level = response.data.levels;
+        console.log(response.data);
+        setSubjectGroup();
+      });
+  };
 });
 
