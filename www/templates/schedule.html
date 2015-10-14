@@ -1,6 +1,6 @@
-<ion-view ng-controller="ProfileController" title="Profile" ng-init="init()">
+<ion-view ng-controller="ScheduleController" title="Schedule" ng-init="init()">
     <ion-header-bar class="bar-stable bar-header center" style="background-color:#3cd5af;">
-        <button class="button button-icon icon ion-android-arrow-back"></button>
+        <button class="button button-icon icon ion-android-arrow-back" ng-click="go_back()"></button>
         <div class="h1 title">Schedules</div>
     </ion-header-bar>
 
@@ -9,17 +9,11 @@
 
         <ion-list>
 
-          <div class="list">
-            <div class="item item-icon-left" href="#">
+          <div class="list" >
+            <div class="item item-icon-left" href="#" ng-repeat="time in schedule_now">
               <i class="icon ion-android-time"></i>
-              <h2>Monday</h2>
-              <p>10:00 - 12:00</p>
-            </div>
-
-            <div class="item item-icon-left" href="#">
-              <i class="icon ion-android-time"></i>
-              <h2>Tuesday</h2>
-              <p>10:00 - 12:00</p>
+              <h2>{{time.day}}</h2>
+              <p>{{time.time_ranges.time_start}} - {{time.time_ranges.time_end}}</p>
             </div>
 
           </div>
@@ -28,7 +22,7 @@
 
 
             <div class="bar bar-footer">
-              <button class="button button-outline button-positive" style="width:100%;">
+              <button class="button button-outline button-positive" style="width:100%;" ng-click="go_create()">
                 Create Schedules
               </button>
             </div>

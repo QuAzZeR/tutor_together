@@ -16,16 +16,8 @@
             &nbsp;
             Subject
           </div>
-          <select>
-            <option>คณิตสาสตร์</option>
-            <option selected>วิทยาศาสตร์</option>
-            <option>ฟิสิกส์</option>
-            <option>เคมี์</option>
-            <option>ชีววิทยา</option>
-            <option>ภาษาไทย</option>
-            <option>ภาษาอังกฤษ</option>
-            <option>ภาษาต่างประเทศ</option>
-            <option>สังคมศึกษา</option>
+          <select name="Subject" id="subject" ng-model = "selected_subject">
+            <option ng-repeat="subject in Subjects" value="{{subject}}">{{subject}}</option>
           </select>
         </label>
 
@@ -35,38 +27,30 @@
             &nbsp;
             Level
           </div>
-          <select>
-            <option>อนุบาล</option>
-            <option>ประถมต้น</option>
-            <option>ประถมปลาย</option>
-            <option>มันธยมต้น</option>
-            <option selected>มัธยมปลาย</option>
-            
-            <option>อุดมศึกษา</option>
-            <option>อื่นๆ</option>
-
+          <select name="Level" id="level" ng-model = "selected_level">
+            <option ng-repeat="level in levels" value="{{level}}">{{level}}</option>
           </select>
         </label>
 
         <!-- Day -->
         <div class="item item-button-right">
           Schedules
-          <button class="button button-clear button-positive">
+          <button class="button button-clear button-positive" ng-click="go_schedule()">
             <i class="icon ion-chevron-right"></i>
           </button>
         </div>
 
         <!-- description -->
         <label class="item item-input item-stacked-label">
-          <span class="input-label">Descriptions</span>
-          <input type="text" placeholder="text">
+          <span class="input-label" >Descriptions</span>
+          <input type="text" placeholder="text" ng-model="descript" >
         </label>
 
       </div>
 
       <br>
 
-              <button class="button button-outline button-positive" style="width:100%;">
+              <button class="button button-outline button-positive" style="width:100%;" ng-click="create()" >
                 Create
               </button>
     </ion-list>

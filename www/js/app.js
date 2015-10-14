@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 
-var app = angular.module('starter', ['ionic', 'ngStorage', 'ngCordova','Service'])
+var app = angular.module('starter', ['ionic', 'ngStorage', 'ngCordova','Service','scheduleService'])
 var PostUrl="http://10.2.32.102:8000";
 app.run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
@@ -40,6 +40,16 @@ app.config(function($stateProvider, $urlRouterProvider) {
             url: '/createlesson',
             templateUrl: 'templates/createlesson.html',
             controller: 'CreateLessonController'
+        })
+        .state('schedule',{
+          url: '/schedule',
+          templateUrl: 'templates/schedule.html',
+          controller: 'ScheduleController'
+        })
+        .state('create_schedule',{
+          url: '/create_schedule',
+          templateUrl: 'templates/create_schedule.html',
+          controller: 'CreateScheduleController'
         });
     $urlRouterProvider.otherwise('/login');
 });
@@ -71,14 +81,15 @@ app.controller("LoginController", function($scope, $cordovaOauth, $localStorage,
             var sendData = result.data;
                 sendData.site = 'facebook';
                 UserRegisterService.setInfo(sendData);
-                $http.post(PostUrl+"/login", sendData).then(function(response) {
+                /*$http.post(PostUrl+"/login", sendData).then(function(response) {
                     if(response.data == "go_regis"){
                        $location.path("/register");
                    }
                    else {
                       $location.path("/createlesson");      
                    }
-               });
+               });*/
+                 $location.path("/createlesson");      
                 
          });
      }
@@ -191,6 +202,7 @@ app.controller('RegisterController', function($scope,UserRegisterService,$http) 
     collectData(age,phone)
      $http.post(tmp, collectData(phone) ).then(function(response) {
        console.log(response.data);
+       $location.path("/profile");
      });
 
   }
@@ -211,12 +223,54 @@ app.controller("ProfileController",function($scope,$location,$http,UserRegisterS
 
 app.controller("CreateLessonController",function($scope,$location,$http,UserRegisterService){
   $scope.init = function(){
-      $http.get(PostUrl+"/getsubjectdata").then(function(response){
-        $Subject = response.data.subjects;
-        $level = response.data.levels;
-        console.log(response.data);
-        setSubjectGroup();
-      });
+      // $http.get(PostUrl+"/getsubjectdata").then(function(response){
+      //   $scope.Subjects = response.data.subjects;
+      //   $scope.levels = response.data.levels;
+      //   console.log(response.data);
+      //   setSubjectGroup();
+      // });
+      $scope.Subjects = ["Mathmatics","Science","Art","English","Thai","Social"];
+      $scope.levels = ["ม.ต้น","ม.ปลาย"];
+      $scope.selected_subject = $scope.Subjects[0];
+      $scope.selected_level = $scope.levels[0];
   };
+  $scope.go_schedule = function(){
+    
+    $location.path("/schedule");
+  }
+  $scope.create = function(){
+    $location.path("/login");
+  }
 });
+app.controller("ScheduleController",function($scope,$location,MySchedule){
+  $scope.init = function(){
+      $scope.schedule_now = MySchedule.getSchedule();
+      console.log($scope.schedule_now);
+  };
+  $scope.go_create = function(){
+      $location.path("/create_schedule");
+  };
+  $scope.go_back = function(){
+    $location.path("/createlesson")
+  }
+});
+app.controller("CreateScheduleController",function($scope,$location,MySchedule){
+  $scope.init = function(){
+    $scope.selected_day="Monday";
+    $scope.selected_timestart = "00.00";
+    $scope.selected_timeend ="01.00";
+  }
+  $scope.create = function(day,timeStart,timeEnd){
+    ThisSchedule = {}
+    ThisSchedule.day = day;
+    ThisSchedule.time_ranges={time_start: timeStart , time_end: timeEnd};
+    
+    MySchedule.addSchedule(ThisSchedule);
+    console.log(MySchedule.getSchedule());
+    $location.path('/schedule');
 
+  }
+  $scope.go_back = function(){
+    window.history.back();
+  }
+});

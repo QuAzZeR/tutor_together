@@ -12,8 +12,7 @@
                     Status
                 </div>
                 <select name="Status" id ="Status" ng-model="choice.select_choice">
-                    <option ng-repeat="option in choice.select_status" value="{{option}}">{{option}} </option>
-                    
+                    <option ng-repeat="option in choice.select_status" value="{{subject}}">{{subject}} </option>
                 </select>
             </label>
             <div ng-repeat="group in groups" ng-show="choice.select_choice == 'teacher'">
