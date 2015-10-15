@@ -23,6 +23,7 @@ angular.module('scheduleService',[]).factory('MySchedule',function(){
 		return MySchedule.schedule ;
 	}
 	MySchedule.clearSchedule = function(){
+		MySchedule.schedule=[]
 		count=0;
 	}
 	return MySchedule;

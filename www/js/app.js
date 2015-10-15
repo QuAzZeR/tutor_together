@@ -46,10 +46,15 @@ app.config(function($stateProvider, $urlRouterProvider) {
           templateUrl: 'templates/schedule.html',
           controller: 'ScheduleController'
         })
-        .state('create_schedule',{
-          url: '/create_schedule',
-          templateUrl: 'templates/create_schedule.html',
+        .state('createschedule',{
+          url: '/createschedule',
+          templateUrl: 'templates/createschedule.html',
           controller: 'CreateScheduleController'
+        })
+        .state('lessondetail',{
+          url: '/lessondetail',
+          templateUrl: 'templates/lessondetail.html',
+          controller: 'LessonDetailController'
         });
     $urlRouterProvider.otherwise('/login');
 });
@@ -221,7 +226,7 @@ app.controller("ProfileController",function($scope,$location,$http,UserRegisterS
   }
 });
 
-app.controller("CreateLessonController",function($scope,$location,$http,UserRegisterService){
+app.controller("CreateLessonController",function($scope,$location,$http,UserRegisterService,MySchedule){
   $scope.init = function(){
       // $http.get(PostUrl+"/getsubjectdata").then(function(response){
       //   $scope.Subjects = response.data.subjects;
@@ -233,12 +238,14 @@ app.controller("CreateLessonController",function($scope,$location,$http,UserRegi
       $scope.levels = ["ม.ต้น","ม.ปลาย"];
       $scope.selected_subject = $scope.Subjects[0];
       $scope.selected_level = $scope.levels[0];
+      MySchedule.clearSchedule();
   };
   $scope.go_schedule = function(){
     
     $location.path("/schedule");
   }
   $scope.create = function(){
+    console.log(MySchedule.getSchedule());
     $location.path("/login");
   }
 });
@@ -248,7 +255,7 @@ app.controller("ScheduleController",function($scope,$location,MySchedule){
       console.log($scope.schedule_now);
   };
   $scope.go_create = function(){
-      $location.path("/create_schedule");
+      $location.path("/createschedule");
   };
   $scope.go_back = function(){
     $location.path("/createlesson")
@@ -273,4 +280,7 @@ app.controller("CreateScheduleController",function($scope,$location,MySchedule){
   $scope.go_back = function(){
     window.history.back();
   }
+});
+app.controller("LessonDetailController",function($scope,$location,$http,UserRegisterService){
+
 });
