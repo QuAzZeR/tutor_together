@@ -28,3 +28,14 @@ angular.module('scheduleService',[]).factory('MySchedule',function(){
 	}
 	return MySchedule;
 })
+angular.module('dataService',[]).factory('UserInfoService',function(){
+	var UserInfoService={};
+	UserInfoService.setInfo = function(info){
+		UserInfoService.data = info;
+	}
+	UserInfoService.getInfo = function(){
+		return UserInfoService.data;
+	}
+	return UserInfoService;
+	
+})

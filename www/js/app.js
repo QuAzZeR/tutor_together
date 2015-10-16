@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 
-var app = angular.module('starter', ['ionic', 'ngStorage', 'ngCordova','Service','scheduleService'])
+var app = angular.module('starter', ['ionic', 'ngStorage', 'ngCordova','Service','scheduleService','dataService'])
 var PostUrl="http://10.2.32.102:8000";
 app.run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
@@ -55,10 +55,18 @@ app.config(function($stateProvider, $urlRouterProvider) {
           url: '/lessondetail',
           templateUrl: 'templates/lessondetail.html',
           controller: 'LessonDetailController'
+        })
+        .state('mylesson',{
+          url: '/mylesson',
+          templateUrl: 'templates/mylesson.html',
+          controller: 'MylessonController'
         });
+         
+
+
     $urlRouterProvider.otherwise('/login');
 });
-app.controller("LoginController", function($scope, $cordovaOauth, $localStorage, $location,$http,UserRegisterService) {
+app.controller("LoginController", function($scope, $cordovaOauth, $localStorage, $location,$http,UserRegisterService,UserInfoService) {
 
     $scope.login = function() {
         $localStorage.accessToken = "CAAMrJe8InhYBAIxPt9XpmPshOUKbfoLyzzXoZAy6wuTFy8xRREmzZCu8Iv4LrPuSyBJLrLfRi2r9sNuSl7DUEiJW3Sa7TZArUWmtrAcCfMG9Ity7MD43lkHb4P7stxP8JPstIWKRd830w07xWxCMAB28QZAe8g4wcwqLxZAd0VrhOZBMfZCcai7M7zVZBSumPngZD"
@@ -86,6 +94,7 @@ app.controller("LoginController", function($scope, $cordovaOauth, $localStorage,
             var sendData = result.data;
                 sendData.site = 'facebook';
                 UserRegisterService.setInfo(sendData);
+
                 /*$http.post(PostUrl+"/login", sendData).then(function(response) {
                     if(response.data == "go_regis"){
                        $location.path("/register");
@@ -94,7 +103,9 @@ app.controller("LoginController", function($scope, $cordovaOauth, $localStorage,
                       $location.path("/createlesson");      
                    }
                });*/
+                UserInfoService.setInfo({site: "facebook", id : '1'});
                  $location.path("/createlesson");      
+                
                 
          });
      }
@@ -212,10 +223,12 @@ app.controller('RegisterController', function($scope,UserRegisterService,$http) 
 
   }
 });
-app.controller("ProfileController",function($scope,$location,$http,UserRegisterService){
+app.controller("ProfileController",function($scope,$location,$http,UserRegisterService,UserInfoService){
   $scope.init = function(){
       $http.post(PostUrl+"/profile",UserRegisterService.getInfoForRegister()).then(function(response){      
         $scope.showData = response.data;
+
+        UserInfoService.setInfo(response.data.authen);
         $scope.showData.teach = ""
         for(var i = 0; i < $scope.showData.teach_subjects.length ;i++){
           if($scope.showData.teach.search($scope.showData.teach_subjects[i].subject)==-1)
@@ -226,7 +239,7 @@ app.controller("ProfileController",function($scope,$location,$http,UserRegisterS
   }
 });
 
-app.controller("CreateLessonController",function($scope,$location,$http,UserRegisterService,MySchedule){
+app.controller("CreateLessonController",function($scope,$location,$http,UserRegisterService,MySchedule,UserInfoService){
   $scope.init = function(){
       // $http.get(PostUrl+"/getsubjectdata").then(function(response){
       //   $scope.Subjects = response.data.subjects;
@@ -237,16 +250,23 @@ app.controller("CreateLessonController",function($scope,$location,$http,UserRegi
       $scope.Subjects = ["Mathmatics","Science","Art","English","Thai","Social"];
       $scope.levels = ["ม.ต้น","ม.ปลาย"];
       $scope.selected_subject = $scope.Subjects[0];
-      $scope.selected_level = $scope.levels[0];
+      $scope.selected_level = $scope.levels[0];    
+      
       MySchedule.clearSchedule();
   };
   $scope.go_schedule = function(){
     
     $location.path("/schedule");
   }
-  $scope.create = function(){
-    console.log(MySchedule.getSchedule());
-    $location.path("/login");
+  $scope.create = function(subject,level,description){
+    Lesson = {}
+    Lesson.authen = UserInfoService.getInfo();
+    Lesson.schedule = MySchedule.getSchedule();
+    Lesson.level = level;
+    Lesson.subject = subject;
+    Lesson.description = description;
+    console.log(Lesson);
+    //$location.path("/mylesson");
   }
 });
 app.controller("ScheduleController",function($scope,$location,MySchedule){
@@ -282,5 +302,78 @@ app.controller("CreateScheduleController",function($scope,$location,MySchedule){
   }
 });
 app.controller("LessonDetailController",function($scope,$location,$http,UserRegisterService){
+  $scope.init = function(){
 
+  }
+  $scope.go_back = function(){
+    window.history.back();
+  }
 });
+app.controller("MylessonController",function($scope,$location,$http,UserRegisterService){
+  setPicture = function(subject){
+    ["Mathmatics","Science","Art","English","Thai","Social"];
+    if(subject == "Mathmatics")
+      return "img/math-icon.png";
+    else if(subject == "Science")
+      return "img/science-icon.png"
+    
+    else if(subject == "Art")
+      return "img/art-icon.png"
+    else if(subject == "English")
+      return "img/english-icon.png"
+    else if(subject == "Social")
+      return "img/social-icon.png"
+    else if(subject == "Thai")
+      return "img/etc-icon.png"
+
+
+  }
+  $scope.init = function(){
+
+  }
+});
+app.controller('SearchController', function($scope) {
+  console.log('HomeTabCtrl');
+});
+// angular.module('ionicApp', ['ionic'])
+
+// .config(function($stateProvider, $urlRouterProvider) {
+
+//   $stateProvider
+//     .state('tabs', {
+//       url: "/tab",
+//       abstract: true,
+//       templateUrl: "tabs.html"
+//     })
+//     .state('tabs.teacher', {
+//       url: "/teacher",
+//       views: {
+//         'teacher-tab': {
+//           templateUrl: "teacher.html",
+//           controller: 'HomeTabCtrl'
+//         }
+//       }
+//     })
+//     .state('tabs.subject', {
+//       url: "/subject",
+//       views: {
+//         'subject-tab': {
+//           templateUrl: "subject.html"
+//         }
+//       }
+//     })
+//     .state('tabs.map', {
+//       url: "/map",
+//       views: {
+//         'map-tab': {
+//           templateUrl: "map.html"
+//         }
+//       }
+//     });
+//    $urlRouterProvider.otherwise("/tab/teacher");
+
+// })
+
+// .controller('SearchController', function($scope) {
+//   console.log('HomeTabCtrl');
+// });
