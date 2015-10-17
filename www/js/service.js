@@ -7,6 +7,9 @@ angular.module('Service',[]).factory('UserRegisterService',function(){
 	UserRegisterService.setInfo = function(info){
 		UserRegisterService.Info = info;
 	}
+	UserRegisterService.clearData = function(){
+		UserRegisterService = {}
+	}
 	return UserRegisterService;
 });
 
@@ -35,6 +38,9 @@ angular.module('dataService',[]).factory('UserInfoService',function(){
 	}
 	UserInfoService.getInfo = function(){
 		return UserInfoService.data;
+	}
+	UserInfoService.clearData = function(){
+		UserInfoService = {}
 	}
 	return UserInfoService;
 	

@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 
 var app = angular.module('starter', ['ionic', 'ngStorage', 'ngCordova','Service','scheduleService','dataService','lessonService'])
-var PostUrl="http://10.2.22.140:8000";
+var PostUrl="http://128.199.122.155:7110";
 app.run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -61,6 +61,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
           templateUrl: 'templates/mylesson.html',
           controller: 'MylessonController'
         })
+        .state('search',{
+          url: '/search',
+          templateUrl: 'templates/search.html',
+          controller: ''
+        });
 
          
 
@@ -113,6 +118,10 @@ app.controller("LoginController", function($scope, $cordovaOauth, $localStorage,
                 
                 
          });
+     }
+     $scope.init = function(){
+      UserInfoService.clearData();
+      UserRegisterService.clearData();
      }
 });
 
@@ -232,7 +241,7 @@ app.controller("ProfileController",function($scope,$location,$http,UserRegisterS
   $scope.init = function(){
       $http.post(PostUrl+"/profile",UserRegisterService.getInfoForRegister()).then(function(response){      
         $scope.showData = response.data;
-
+         console.log(response.data); 
         UserInfoService.setInfo(response.data);
         $scope.showData.teach = ""
         for(var i = 0; i < $scope.showData.teach_subjects.length ;i++){
@@ -281,6 +290,9 @@ app.controller("CreateLessonController",function($scope,$location,$http,UserRegi
     });
     //$location.path("/mylesson");
   }
+  $scope.go_back = function(){
+    window.history.back();
+  }
   
 });
 app.controller("ScheduleController",function($scope,$location,MySchedule){
@@ -316,6 +328,11 @@ app.controller("CreateScheduleController",function($scope,$location,MySchedule){
   $scope.go_back = function(){
     window.history.back();
   }
+  $scope.logout = function(){
+    console.log("eiei");
+  }
+  $scope.eiei =false;
+
 });
 app.controller("LessonDetailController",function($scope,$location,$http,lessonInfoService){
   $scope.init = function(){
@@ -355,4 +372,11 @@ app.controller("MylessonController",function($scope,$location,$http,UserInfoServ
     console.log(data)
     $location.path("/lessondetail");
   }
+  $scope.go_back = function(){
+    window.history.back();
+  }
 });
+app.controller("SearchController",function($scope,$location,$http,UserInfoService,lessonInfoService){
+
+})
+
