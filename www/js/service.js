@@ -39,3 +39,13 @@ angular.module('dataService',[]).factory('UserInfoService',function(){
 	return UserInfoService;
 	
 })
+angular.module('lessonService',[]).factory('lessonInfoService',function(){
+	var lessonInfoService={};
+	lessonInfoService.setLesson=function(lesson){
+		lessonInfoService.lesson = lesson;	
+	}
+	lessonInfoService.getLesson = function() {
+		return lessonInfoService.lesson;
+	}
+	return lessonInfoService;
+})
