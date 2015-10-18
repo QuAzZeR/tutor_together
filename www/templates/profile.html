@@ -1,5 +1,6 @@
-<ion-side-menus>
-<ion-side-menu side="left">
+<ion-view ng-controller="ProfileController" title="Profile" ng-init="init()">
+<ion-side-menus >
+<ion-side-menu side="left" >
                 <ion-header-bar class="bar-stable" style="background-color:#3cd5af;">
                     <h1 class="title"></h1>
                 </ion-header-bar>
@@ -8,13 +9,13 @@
                         <ion-item class="item" nav-clear menu-close href="#/profile" >
                             Profile
                         </ion-item>
-                        <ion-item class="item" nav-clear menu-close href="#/mylesson"  >
+                        <ion-item class="item" nav-clear menu-close href="#/mylesson" ng-show="showData.isTutor == true">
                             My Lesson
                         </ion-item>
-                        <ion-item class="item" nav-clear menu-close href="#/search" ng-show="showData.isTutor " >
+                        <ion-item class="item" nav-clear menu-close href="#/search" ng-show="showData.isTutor == false">
                             Search
                         </ion-item>
-                        <ion-item class="item" nav-clear menu-close href="#/createlesson"  >
+                        <ion-item class="item" nav-clear menu-close href="#/createlesson" ng-show="showData.isTutor == true">
                             Create Lesson
                         </ion-item>
                         
@@ -26,7 +27,7 @@
                 </ion-content>
             </ion-side-menu>
 <ion-side-menu-content>
-<ion-view ng-controller="ProfileController" title="Profile" ng-init="init()">
+
     <ion-header-bar class="bar-stable bar-header" style="background-color:#3cd5af">
             <button class="button button-icon icon ion-navicon" menu-toggle="left"></button>
             <div class="h1 title">Profile</div>
@@ -63,6 +64,6 @@
             </div>
 
         </ion-content>
-    </ion-view>
 </ion-side-menu-content>
 </ion-side-menus>
+</ion-view>

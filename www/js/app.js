@@ -61,113 +61,84 @@ app.config(function($stateProvider, $urlRouterProvider) {
           templateUrl: 'templates/mylesson.html',
           controller: 'MylessonController'
         })
-        .state('search',{
-          url: '/search',
-          templateUrl: 'templates/search.html',
-          controller: ''
-        });
 
-         
-
-
+        
     $urlRouterProvider.otherwise('/login');
 });
+
 app.controller("LoginController", function($scope, $cordovaOauth, $localStorage, $location,$http,UserRegisterService,UserInfoService) {
 
     $scope.login = function() {
-        $localStorage.accessToken = "CAAMrJe8InhYBAIxPt9XpmPshOUKbfoLyzzXoZAy6wuTFy8xRREmzZCu8Iv4LrPuSyBJLrLfRi2r9sNuSl7DUEiJW3Sa7TZArUWmtrAcCfMG9Ity7MD43lkHb4P7stxP8JPstIWKRd830w07xWxCMAB28QZAe8g4wcwqLxZAd0VrhOZBMfZCcai7M7zVZBSumPngZD"
-        $http.get("https://graph.facebook.com/v2.2/me", { params: { access_token: $localStorage.accessToken, fields: "id,name,gender,email,picture", format: "json" }}).then(function(result) {
-            $scope.profileData = result.data;
-            var sendData = result.data;
+
+        $cordovaOauth.facebook("891866854235670", ["email"]).then(function(result) {
+            $localStorage.accessToken = result.access_token;
+            $http.get("https://graph.facebook.com/v2.2/me", { params: { access_token: $localStorage.accessToken, fields: "id,name,gender,email,picture", format: "json" }}).then(function(result) {
+                $scope.profileData = result.data;
+                var sendData = result.data;
                 sendData.site = 'facebook';
                 UserRegisterService.setInfo(sendData);
-                $http.post(PostUrl+"/login", sendData).then(function(response) {
-                    if(response.data == "go_regis"){
-                       $location.path("/register");
-                   }
-                   else {
-                      $location.path("/profile");      
-                   }
-               });
-                
-         });
-     }
-     $scope.createlesson = function(){
-        console.log("in createleson")
-        $localStorage.accessToken = "CAAMrJe8InhYBAIxPt9XpmPshOUKbfoLyzzXoZAy6wuTFy8xRREmzZCu8Iv4LrPuSyBJLrLfRi2r9sNuSl7DUEiJW3Sa7TZArUWmtrAcCfMG9Ity7MD43lkHb4P7stxP8JPstIWKRd830w07xWxCMAB28QZAe8g4wcwqLxZAd0VrhOZBMfZCcai7M7zVZBSumPngZD"
-        $http.get("https://graph.facebook.com/v2.2/me", { params: { access_token: $localStorage.accessToken, fields: "id,name,gender,email,picture", format: "json" }}).then(function(result) {
-            $scope.profileData = result.data;
-            var sendData = result.data;
-                sendData.site = 'facebook';
-                UserRegisterService.setInfo(sendData);
-                $http.post(PostUrl+"/profile",UserRegisterService.getInfoForRegister()).then(function(response){      
-                  $scope.showData = response.data;
-                  UserInfoService.setInfo(response.data);
-                  
-                });
-                /*$http.post(PostUrl+"/login", sendData).then(function(response) {
-                    if(response.data == "go_regis"){
-                       $location.path("/register");
-                   }
-                   else {
-                      $location.path("/createlesson");      
-                   }
-               });*/
-                
-                $location.path("/createlesson");      
-                
-                
-         });
-     }
-     $scope.init = function(){
+            $http.post(PostUrl+"/login", sendData).then(function(response) {
+                if(response.data == "go_regis"){
+                    
+                    $location.url("/register");
+                }
+                else {
+                    $location.url("/profile");
+                }
+            });
+            },function(error){
+
+            });
+
+        }, function(error) {
+            alert("There was a problem signing in!  See the console for logs");
+            console.log(error);
+        });
+    };
+    $scope.init = function(){
       UserInfoService.clearData();
       UserRegisterService.clearData();
      }
-});
 
-// app.controller("LoginController", function($scope, $cordovaOauth, $localStorage, $location,$http,UserRegisterService) {
+});
+// app.controller("LoginController", function($scope, $cordovaOauth, $localStorage, $location,$http,UserRegisterService,UserInfoService) {
 
 //     $scope.login = function() {
-
-//         $cordovaOauth.facebook("891866854235670", ["email"]).then(function(result) {
-//             $localStorage.accessToken = result.access_token;
-//             $http.get("https://graph.facebook.com/v2.2/me", { params: { access_token: $localStorage.accessToken, fields: "id,name,gender,email,picture", format: "json" }}).then(function(result) {
-//                 $scope.profileData = result.data;
-//                 var sendData = result.data;
+//         $localStorage.accessToken = "CAAMrJe8InhYBAIxPt9XpmPshOUKbfoLyzzXoZAy6wuTFy8xRREmzZCu8Iv4LrPuSyBJLrLfRi2r9sNuSl7DUEiJW3Sa7TZArUWmtrAcCfMG9Ity7MD43lkHb4P7stxP8JPstIWKRd830w07xWxCMAB28QZAe8g4wcwqLxZAd0VrhOZBMfZCcai7M7zVZBSumPngZD"
+//         $http.get("https://graph.facebook.com/v2.2/me", { params: { access_token: $localStorage.accessToken, fields: "id,name,gender,email,picture", format: "json" }}).then(function(result) {
+//             $scope.profileData = result.data;
+//             var sendData = result.data;
 //                 sendData.site = 'facebook';
 //                 UserRegisterService.setInfo(sendData);
-//             $http.post(PostUrl+"/login", sendData).then(function(response) {
-//                 if(response.data == "go_regis"){
-                    
-//                     $location.path("/register");
-//                 }
-//                 else {
-//                     $location.path("/profile");
-//                 }
-//             });
-//             },function(error){
-
-//             });
-
-//         }, function(error) {
-//             alert("There was a problem signing in!  See the console for logs");
-//             console.log(error);
-//         });
-//     };
-
+//                 $http.post(PostUrl+"/login", sendData).then(function(response) {
+//                     if(response.data == "go_regis"){
+//                        $location.url("/register");
+//                    }
+//                    else {
+//                       $location.url("/profile");      
+//                    }
+//                });
+                
+//          });
+//      }
+     
+//      $scope.init = function(){
+//       UserInfoService.clearData();
+//       UserRegisterService.clearData();
+//      }
 // });
 
 
 
 
-app.controller('RegisterController', function($scope,UserRegisterService,$http) {
-  $scope.age;
-  $scope.phone;
-  $scope.groups = [];
-  $scope.choice = {
-      select_status: ["student","teacher"],
-      select_choice: "student"
-  };
+app.controller('RegisterController', function($scope,UserRegisterService,$http,$location) {
+  // $scope.age;
+  // $scope.phone;
+  // $scope.groups = [];
+  // $scope.choice = {
+  //     select_status: ["student","teacher"],
+  //     select_choice: "student"
+  // };
   $Subject = []
   $level = []
   $scope.init = function(){
@@ -178,7 +149,13 @@ app.controller('RegisterController', function($scope,UserRegisterService,$http) 
         console.log(response.data);
         setSubjectGroup();
       });
-    
+      $scope.age;
+      $scope.phone;
+      $scope.groups = [];
+      $scope.choice = {
+          select_status: ["student","teacher"],
+          select_choice: "student"
+      };
     console.log($Subject);
 
   }
@@ -229,10 +206,10 @@ app.controller('RegisterController', function($scope,UserRegisterService,$http) 
   $scope.register = function(phone) {
     tmp = PostUrl+"/regis";
     console.log(tmp);
-    collectData(age,phone)
+    console.log(collectData(phone));
      $http.post(tmp, collectData(phone) ).then(function(response) {
        console.log(response.data);
-       $location.path("/profile");
+       $location.url("/profile");
      });
 
   }
@@ -241,7 +218,7 @@ app.controller("ProfileController",function($scope,$location,$http,UserRegisterS
   $scope.init = function(){
       $http.post(PostUrl+"/profile",UserRegisterService.getInfoForRegister()).then(function(response){      
         $scope.showData = response.data;
-         console.log(response.data); 
+         console.log($scope.showData.isTutor); 
         UserInfoService.setInfo(response.data);
         $scope.showData.teach = ""
         for(var i = 0; i < $scope.showData.teach_subjects.length ;i++){
@@ -262,16 +239,11 @@ app.controller("CreateLessonController",function($scope,$location,$http,UserRegi
         $scope.selected_subject = $scope.Subjects[0];
         $scope.selected_level = $scope.levels[0];    
       });
-      // $scope.Subjects = ["Mathmatics","Science","Art","English","Thai","Social"];
-      // $scope.levels = ["ม.ต้น","ม.ปลาย"];
-      // $scope.selected_subject = $scope.Subjects[0];
-      // $scope.selected_level = $scope.levels[0];    
-      
       MySchedule.clearSchedule();
   };
   $scope.go_schedule = function(){
     
-    $location.path("/schedule");
+    $location.url("/schedule");
   }
   $scope.create = function(subject,level,description){
     Lesson = {}
@@ -286,12 +258,13 @@ app.controller("CreateLessonController",function($scope,$location,$http,UserRegi
     $http.post(PostUrl+"/createlesson",sendData).then(function(response){
 
       if(response.data=="success")
-        $location.path("/mylesson");
+        $location.url("/mylesson");
     });
-    //$location.path("/mylesson");
+    //$location.url("/mylesson");
   }
   $scope.go_back = function(){
-    window.history.back();
+    $location.url('/profile');
+    //window.open('#/profile');
   }
   
 });
@@ -301,10 +274,10 @@ app.controller("ScheduleController",function($scope,$location,MySchedule){
       console.log($scope.schedule_now);
   };
   $scope.go_create = function(){
-      $location.path("/createschedule");
+      $location.url("/createschedule");
   };
   $scope.go_back = function(){
-    $location.path("/createlesson")
+    $location.url("/createlesson")
   }
 });
 app.controller("CreateScheduleController",function($scope,$location,MySchedule){
@@ -322,16 +295,12 @@ app.controller("CreateScheduleController",function($scope,$location,MySchedule){
     
     MySchedule.addSchedule(ThisSchedule);
     console.log(MySchedule.getSchedule());
-    $location.path('/schedule');
+    $location.url('/schedule');
 
   }
   $scope.go_back = function(){
     window.history.back();
   }
-  $scope.logout = function(){
-    console.log("eiei");
-  }
-  $scope.eiei =false;
 
 });
 app.controller("LessonDetailController",function($scope,$location,$http,lessonInfoService){
@@ -343,6 +312,15 @@ app.controller("LessonDetailController",function($scope,$location,$http,lessonIn
   }
 });
 app.controller("MylessonController",function($scope,$location,$http,UserInfoService,lessonInfoService){
+  $scope.init = function(){
+      $http.post(PostUrl+"/getlessondata",UserInfoService.getInfo().authen).then(function(response){
+          $scope.showData=response.data;
+          console.log(response.data);
+          $scope.size = $scope.showData.length;
+          console.log($scope.size);
+      });
+      console.log("eiei");
+  }
   $scope.setPicture = function(subject){
     if(subject == "Mathmatics")
       return "img/math-icon.png";
@@ -361,19 +339,15 @@ app.controller("MylessonController",function($scope,$location,$http,UserInfoServ
       return "img/etc-icon.png"
 
   }
-  $scope.init = function(){
-      $http.post(PostUrl+"/getlessondata",UserInfoService.getInfo().authen).then(function(response){
-          $scope.showData=response.data;
-          console.log(response.data);
-      });
-  }
+  
   $scope.lessonDetail = function(data){
     lessonInfoService.setLesson(data);
-    console.log(data)
-    $location.path("/lessondetail");
+    console.log(data);
+    $location.url("/lessondetail");
   }
   $scope.go_back = function(){
-    window.history.back();
+    $location.url('/profile')
+    
   }
 });
 app.controller("SearchController",function($scope,$location,$http,UserInfoService,lessonInfoService){
