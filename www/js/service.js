@@ -1,4 +1,18 @@
-angular.module('Service',[]).factory('UserRegisterService',function(){
+angular.module('Service',[]).factory('UserLoginService',function(){
+	var UserLoginService={};
+
+	UserLoginService.getInfoForRegister = function(){
+		return UserLoginService.Info;
+	}
+	UserLoginService.setInfo = function(info){
+		UserLoginService.Info = info;
+	}
+	UserLoginService.clearData = function(){
+		UserLoginService = {}
+	}
+	return UserLoginService;
+});
+angular.module('RegisterService',[]).factory('UserRegisterService',function(){
 	var UserRegisterService={};
 
 	UserRegisterService.getInfoForRegister = function(){
@@ -12,7 +26,6 @@ angular.module('Service',[]).factory('UserRegisterService',function(){
 	}
 	return UserRegisterService;
 });
-
 angular.module('scheduleService',[]).factory('MySchedule',function(){
 	var MySchedule={};
 	MySchedule.schedule=[]
