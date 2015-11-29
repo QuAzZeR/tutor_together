@@ -14,7 +14,8 @@ var app = angular.module('tutor_together',
   'register',
   'createschedule',
   'createlesson',
-  'schedule'
+  'schedule',
+  'search'
 
   ]);
 var Url="http://128.199.122.155:7110";
@@ -82,7 +83,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
           templateUrl: 'templates/mylesson.html',
           controller: 'MylessonController'
         })
-
+        .state('search',{
+          url: '/search',
+          templateUrl: 'templates/search.html',
+          controller: 'SearchController'
+        })
         
     $urlRouterProvider.otherwise('/login');
 });

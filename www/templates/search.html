@@ -1,46 +1,22 @@
-<html ng-app="ionicApp">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-
-    <title>Search</title>
-
-    <link href="http://code.ionicframework.com/nightly/css/ionic.css" rel="stylesheet">
-    <link href="./css/style.css" rel="stylesheet">
-    <script src="http://code.ionicframework.com/nightly/js/ionic.bundle.js"></script>
-    <script src="./js/app.js"></script>
-</head>
-
-<body>
-
-<!--ion-view ng-controller="SearchController" title="search" ng-init="init()"-->
+<ion-view ng-controller="SearchController" title="search" ng-init="init()"-->
     <ion-header-bar class="bar-stable bar-header bar-positive" style="background-color:#3cd5af">
-        <button class="button button-icon icon ion-android-menu"></button>
+        <button class="button button-icon icon ion-android-arrow-back" ng-click="go_back()"></button>
         <div class="h1 title">Search</div>
     </ion-header-bar>
-
-    <ion-nav-view animation="slide-left-right"></ion-nav-view>
-
-
-    <script id="tabs.html" type="text/ng-template">
-
         <ion-tabs class="tabs-icon-top tabs-positive tabs-striped">
-
-            <ion-tab title="Teacher" icon="ion-android-people" href="#/tab/teacher">
+            <ion-tab title="Teacher" icon="ion-android-people" href="#/search/teacher">
                 <ion-nav-view name="teacher-tab"></ion-nav-view>
             </ion-tab>
 
-            <ion-tab title="Subject" icon="ion-ios-flask" href="#/tab/subject">
+            <ion-tab title="Subject" icon="ion-ios-flask" href="#/search/subject">
                 <ion-nav-view name="subject-tab"></ion-nav-view>
             </ion-tab>
 
-            <ion-tab title="Map" icon="ion-android-map" ui-sref="tabs.map">
+            <ion-tab title="Map" icon="ion-android-map" ui-sref="#/search/map">
                 <ion-nav-view name="map-tab"></ion-nav-view>
             </ion-tab>
 
         </ion-tabs>
-    </script>
 
     <script id="teacher.html" type="text/ng-template">
         <ion-view title="Teacher">
@@ -192,10 +168,8 @@
         <ion-view title="Map">
             <ion-content>
                 <img src="img/const.png">
-                
             </ion-content>
         </ion-view>
     </script>
-</body>
-</html>
-<!--/ion-view>
+
+</ion-view>
