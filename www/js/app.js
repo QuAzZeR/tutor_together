@@ -35,7 +35,7 @@ app.run(function($ionicPlatform) {
 
 app.controller('IndexController',function ($scope,$location) {
   $scope.init = function(){
-    $location.path('/register');  
+    $location.path('/login');  
   }
   
 });
