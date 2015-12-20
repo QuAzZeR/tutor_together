@@ -68,3 +68,13 @@ angular.module('lessonService',[]).factory('lessonInfoService',function(){
 	}
 	return lessonInfoService;
 })
+angular.module('locationService',[]).factory('latlngService',function(){
+	var latlngService={};
+	latlngService.setLatLng=function(latlng){
+		latlngService.latLng = latlng;
+	}
+	latlngService.getLatLng=function(){
+		return latlngService.latLng;
+	}
+	return latlngService;
+})

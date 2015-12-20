@@ -15,6 +15,12 @@
                     <option ng-repeat="option in choice.select_status" value="{{option}}">{{option}} </option>
                 </select>
             </label>
+            <div class="item item-button-right" ng-show="choice.select_choice == 'teacher'">
+                  Add location
+                  <button class="button button-clear button-positive" ng-click="go_addlocation()">
+                    <i class="icon ion-chevron-right"></i>
+                  </button>
+                </div>
             <div ng-repeat="group in groups" ng-show="choice.select_choice == 'teacher'">
 
                 <ion-item class="item-stable" ng-click="toggleGroup(group)" ng-class="{active: isGroupShown(group)}">

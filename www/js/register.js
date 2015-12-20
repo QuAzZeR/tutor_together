@@ -1,4 +1,4 @@
-angular.module('register',[]).controller('RegisterController', function($scope,UserRegisterService,$http,$location) {
+angular.module('register',[]).controller('RegisterController', function($scope,UserRegisterService,$http,$location,latlngService) {
   // $scope.age;
   // $scope.phone;
   // $scope.groups = [];
@@ -9,11 +9,9 @@ angular.module('register',[]).controller('RegisterController', function($scope,U
   $Subject = []
   $level = []
   $scope.init = function(){
-    console.log("in init")
     $http.get(Url+"/getsubjectdata").then(function(response){
         $Subject = response.data.subjects;
         $level = response.data.levels;
-        console.log(response.data);
         setSubjectGroup();
       });
       $scope.age;
@@ -23,7 +21,7 @@ angular.module('register',[]).controller('RegisterController', function($scope,U
           select_status: ["student","teacher"],
           select_choice: "student"
       };
-    console.log($Subject);
+   
 
   }
 
@@ -57,7 +55,7 @@ angular.module('register',[]).controller('RegisterController', function($scope,U
     profileData.authen = {site: tmp.site, id : tmp.id};
     profileData.isTutor = ($scope.choice.select_choice == "teacher") ? true : false;
     profileData.tel = phone;
-  
+    profileData.position = latlngService.getLatLng();
     tmp=[]
     var count = 0;
     for (var i=0; i<4; i++) {
@@ -77,8 +75,9 @@ angular.module('register',[]).controller('RegisterController', function($scope,U
      $http.post(tmp, collectData(phone) ).then(function(response) {
        console.log(response.data);
        $location.url("/profile");
-       
      });
-
+  }
+  $scope.go_addlocation = function(){
+        $location.url('/addlocation')
   }
 });

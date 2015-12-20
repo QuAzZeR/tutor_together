@@ -16,8 +16,8 @@ var app = angular.module('tutor_together',
   'createlesson',
   'schedule',
   'search',
-  'addlocation'
-
+  'addlocation',
+  'locationService'
   ]);
 var Url="http://128.199.122.155:7110";
 app.run(function($ionicPlatform) {
@@ -35,7 +35,7 @@ app.run(function($ionicPlatform) {
 
 app.controller('IndexController',function ($scope,$location) {
   $scope.init = function(){
-    $location.path('/addlocation');  
+    $location.path('/register');  
   }
   
 });
