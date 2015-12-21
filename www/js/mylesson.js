@@ -1,4 +1,4 @@
-angular.module('mylesson',[]).controller("MylessonController",function($scope,$location,$http,UserInfoService,lessonInfoService){
+angular.module('mylesson',[]).controller("MylessonController",function($scope,$location,$http,UserInfoService,lessonInfoService,teacherDetailService){
   $scope.init = function(){
       $http.post(Url+"/getlessondata",UserInfoService.getInfo().authen).then(function(response){
           $scope.showData=response.data;

@@ -31,17 +31,44 @@ angular.module('search',[])
 
 })
 .controller('SearchController',function($scope,$location){
-	$scope.init2= function(){
-        
+	$scope.init= function(){
+    $location.url('/search/teacher')    
+    
 	}
 	$scope.go_back = function(){
-    
-  	}
+    $location.url('/profile');
+  }
 })
-.controller('Eiei',function($scope,$location,$ionicLoading){
+.controller('searchTeacherController',function($scope,$location,$http,teacherDetailService){
+  $scope.value='';
+  $scope.teachers=[]
+  $scope.searchTeacher = function(value){
+     $http.post(Url+"/searchbyteacher", {search:value} ).then(function(response) {
+       $scope.teachers = response.data;
+       console.log($scope.teachers);
+     });
+  $scope.collectSubject = function(teacher){
+    teacher.teach = ""
+    for(var i = 0; i < teacher.teach_subjects.length ;i++){
+          if(teacher.teach.search(teacher.teach_subjects[i].subject)==-1)
+            teacher.teach+= teacher.teach_subjects[i].subject+" "
+        }
+    return teacher.teach;
+  }
+  $scope.teacherDetails = function(teacher){
+    teacherDetailService.setTeacher(teacher);
+    $location.url('/teacherprofile')
+  }
+  }
+
+})
+.controller('searchSubjectController',function($scope,$location){
+
+})
+.controller('searchMapController',function($scope,$location,$ionicLoading){
 
   $scope.init = function(){
-      $location.path('/search/map');
+      
       var kaset = new google.maps.LatLng(13.847735, 100.571334);
        var mapOptions = {
             center: kaset,
@@ -93,5 +120,6 @@ angular.module('search',[])
         });
     };
 });
+
 
 

@@ -78,3 +78,13 @@ angular.module('locationService',[]).factory('latlngService',function(){
 	}
 	return latlngService;
 })
+angular.module('teacherdetailservice',[]).factory('teacherDetailService',function(){
+	var teacherDetailService={};
+	teacherDetailService.setTeacher = function(teacher){
+		teacherDetailService.Data = teacher;
+	}
+	teacherDetailService.getTeacher = function(){
+		return teacherDetailService.Data;
+	}
+	return teacherDetailService;
+})

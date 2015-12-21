@@ -19,33 +19,30 @@
         </ion-tabs>
 
     <script id="teacher.html" type="text/ng-template">
-        <ion-view title="Teacher">
+        <ion-view ng-controller="searchTeacherController" ng-title="Teacher">
             <ion-content class="padding">
                 <label class="item item-input">
                     <i class="icon ion-search placeholder-icon"></i>
-                    <input type="search" placeholder="Teacher's name">
+                    <input type="search" placeholder="Teacher's name" ng-model="value" ng-change="searchTeacher(value)">
                 </label>
-                <p class="result">2 results</p>
+                <p class="result">{{teachers.length}} results</p>
 
                 <div class="list card">
-
-                    <a class="item item-avatar" href="#">
-                        <img src="img/nut.png">
-                        <h2>อาจารย์ณเดช ได้ทุกท่า</h2>
-                        <p>Math Biology</p>
+                <div ng-repeat="teacher in teachers" >
+                    <a class="item item-avatar" ng-click="teacherDetails(teacher)">
+                        <img src="{{teacher.pic_profile}}">
+                        <h2>{{teacher.firstname}} {{teacher.lastname}}</h2>
+                        <p>{{collectSubject(teacher)}}</p>
                     </a>
-                    <a class="item item-avatar" href="#">
-                        <img src="img/nut.png">
-                        <h2>อาจารย์ณเดช ได้ทุกท่า</h2>
-                        <p>Math Biology</p>
-                    </a>
+                </div>
+                 
                 </div>
             </ion-content>
         </ion-view>
     </script>
 
     <script id="subject.html" type="text/ng-template">
-        <ion-view title="subject">
+        <ion-view ng-controller="searchSubjectController" title="subject">
             <ion-content class="padding">
                 <div class="list">
                     <label class="item item-input item-select">
@@ -138,7 +135,7 @@
     </script>
 
     <script id="map.html" type="text/ng-template">
-        <ion-view ng-controller="Eiei"title="map" ng-init="init()">
+        <ion-view ng-controller="searchMapController"title="map" ng-init="init()">
     <ion-content class="padding">
         <div>
             <div id="map" map></div>

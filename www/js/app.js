@@ -17,7 +17,10 @@ var app = angular.module('tutor_together',
   'schedule',
   'search',
   'addlocation',
-  'locationService'
+  'locationService',
+  'teacherprofile',
+  'teacherlesson',
+  'teacherdetailservice'
   ]);
 var Url="http://128.199.122.155:7110";
 app.run(function($ionicPlatform) {
@@ -35,7 +38,7 @@ app.run(function($ionicPlatform) {
 
 app.controller('IndexController',function ($scope,$location) {
   $scope.init = function(){
-    $location.path('/login');  
+    $location.path('/search');  
   }
   
 });
@@ -94,6 +97,15 @@ app.config(function($stateProvider, $urlRouterProvider) {
           templateUrl: 'templates/addlocation.html',
           controller: 'addLocationController'
         })
-        
+        .state('teacherprofile',{
+          url:'/teacherprofile',
+          templateUrl: 'templates/teacherprofile.html',
+          controller:'teacherProfileController'
+        })
+        .state('teacherlesson',{
+          url:'/teacherlesson',
+          templateUrl: 'templates/teacherlesson.html',
+          controller:'teacherLessonController'
+        })
     $urlRouterProvider.otherwise('/login');
 });
