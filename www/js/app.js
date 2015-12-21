@@ -20,7 +20,9 @@ var app = angular.module('tutor_together',
   'locationService',
   'teacherprofile',
   'teacherlesson',
-  'teacherdetailservice'
+  'teacherdetailservice',
+  'teacherlessondetailservice',
+  'teacherlessondetail'
   ]);
 var Url="http://128.199.122.155:7110";
 app.run(function($ionicPlatform) {
@@ -106,6 +108,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
           url:'/teacherlesson',
           templateUrl: 'templates/teacherlesson.html',
           controller:'teacherLessonController'
+        })
+        .state('teacherlessondetail',{
+          url:'/teacherlessondetail',
+          templateUrl: 'templates/teacherlessondetail.html',
+          controller:'teacherLessonDetailController'
         })
     $urlRouterProvider.otherwise('/login');
 });

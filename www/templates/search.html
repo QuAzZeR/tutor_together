@@ -19,7 +19,7 @@
         </ion-tabs>
 
     <script id="teacher.html" type="text/ng-template">
-        <ion-view ng-controller="searchTeacherController" ng-title="Teacher">
+        <ion-view ng-controller="searchTeacherController" ng-title="Teacher" ng-init="init()">
             <ion-content class="padding">
                 <label class="item item-input">
                     <i class="icon ion-search placeholder-icon"></i>
@@ -42,92 +42,39 @@
     </script>
 
     <script id="subject.html" type="text/ng-template">
-        <ion-view ng-controller="searchSubjectController" title="subject">
+        <ion-view ng-controller="searchSubjectController" title="subject" ng-init="init()">
             <ion-content class="padding">
                 <div class="list">
                     <label class="item item-input item-select">
                         <div class="input-label">
                             Subject
                         </div>
-                        <select>
-                            <option selected>All</option>
-                            <option>Math</option>
-                            <option>Physics</option>
-                            <option>Chemistry</option>
-                            <option>Biology</option>
+                        <select name="Subject" id="subject" ng-model = "selected_subject" ng-change="Search(selected_subject,selected_level)">
+                            <option ng-repeat="subject in Subjects" value="{{subject}}">{{subject}}</option>
                         </select>
+                        
                     </label>
                     <label class="item item-input item-select">
                         <div class="input-label">
                             Level
                         </div>
-                        <select>
-                            <option selected>All</option>
-                            <option>มัธยมต้น</option>
-                            <option>มัธยมปลาย</option>
+                        <select name="Level" id="level" ng-model = "selected_level" ng-change="Search(selected_subject,selected_level)">
+                            <option ng-repeat="level in Levels" value="{{level}}">{{level}}</option>
                         </select>
                     </label>
                     
                     <p class="result">2 results</p>
                 </div>
                 <div class="list card">
-
-                    <a class="item item-avatar" href="#">
-                        <img src="img/nut.png">
-                        <h2>อาจารย์ณเดช ได้ทุกท่า</h2>
-                        <p>Math มัธยมต้น</p>
+                    <div ng-repeat="teacher in Teachers">
+                     <div ng-repeat="lesson in teacher.lesson" >
+                    <a class="item item-avatar" ng-click="teacherLessonDetail(lesson,teacher)" ng-show="filter(selected_subject,selected_level,lesson)">
+                        <img src="{{teacher.pic_profile}}">
+                        <h2>{{teacher.firstname}} {{teacher.lastname}}</h2>
+                        <p>{{lesson.subject}} - {{lesson.level}}</p>
                     </a>
-                    <a class="item item-avatar" href="#">
-                        <img src="img/nut.png">
-                        <h2>อาจารย์ณเดช ได้ทุกท่า</h2>
-                        <p>Math มัธยมต้น</p>
-                    </a>
-                    <a class="item item-avatar" href="#">
-                        <img src="img/nut.png">
-                        <h2>อาจารย์ณเดช ได้ทุกท่า</h2>
-                        <p>Math มัธยมต้น</p>
-                    </a>
-                    <a class="item item-avatar" href="#">
-                        <img src="img/nut.png">
-                        <h2>อาจารย์ณเดช ได้ทุกท่า</h2>
-                        <p>Math มัธยมต้น</p>
-                    </a>
-                    <a class="item item-avatar" href="#">
-                        <img src="img/nut.png">
-                        <h2>อาจารย์ณเดช ได้ทุกท่า</h2>
-                        <p>Math มัธยมต้น</p>
-                    </a>
-                    <a class="item item-avatar" href="#">
-                        <img src="img/nut.png">
-                        <h2>อาจารย์ณเดช ได้ทุกท่า</h2>
-                        <p>Math มัธยมต้น</p>
-                    </a>
-                    <a class="item item-avatar" href="#">
-                        <img src="img/nut.png">
-                        <h2>อาจารย์ณเดช ได้ทุกท่า</h2>
-                        <p>Math มัธยมต้น</p>
-                    </a>
-                    <a class="item item-avatar" href="#">
-                        <img src="img/nut.png">
-                        <h2>อาจารย์ณเดช ได้ทุกท่า</h2>
-                        <p>Math มัธยมต้น</p>
-                    </a>
-                    
-                    <a class="item item-avatar" href="#">
-                        <img src="img/nut.png">
-                        <h2>อาจารย์ณเดช ได้ทุกท่า</h2>
-                        <p>Math มัธยมปลาย</p>
-                    </a>
-                    <a class="item item-avatar" href="#">
-                        <img src="img/nut.png">
-                        <h2>อาจารย์ณเดช ได้ทุกท่า</h2>
-                        <p>Biology มัธยมต้น</p>
-                    </a>
-                    <a class="item item-avatar" href="#">
-                        <img src="img/nut.png">
-                        <h2>อาจารย์ณเดช ได้ทุกท่า</h2>
-                        <p>Biology มัธยมปลาย</p>
-                    </a>
+                
+                    </div>
                 </div>
                 
             </ion-content>
@@ -138,7 +85,7 @@
         <ion-view ng-controller="searchMapController"title="map" ng-init="init()">
     <ion-content class="padding">
         <div>
-            <div id="map" map></div>
+            <map id="searchmap"> </map>
         </div>
     </ion-content>
 </ion-view>

@@ -88,3 +88,13 @@ angular.module('teacherdetailservice',[]).factory('teacherDetailService',functio
 	}
 	return teacherDetailService;
 })
+angular.module('teacherlessondetailservice',[]).factory('teacherLessonDetailService',function(){
+	var teacherLessonDetailService={};
+	teacherLessonDetailService.setData = function(lesson,teacher){
+		teacherLessonDetailService.Data={Teacher:teacher,Lesson:lesson};
+	}
+	teacherLessonDetailService.getData =  function(){
+		return teacherLessonDetailService.Data;
+	}
+	return teacherLessonDetailService;
+})

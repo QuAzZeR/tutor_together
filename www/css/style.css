@@ -54,6 +54,12 @@ body {
     box-shadow:0 3px 25px black;
     position: relative;
 }
+#searchmap{
+   
+  width: 100%;
+  height: 550px;
+  display: block;
+}
 
 #map:after {
     width: 22px;
