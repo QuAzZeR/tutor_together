@@ -1,0 +1,23 @@
+
+<ion-view ng-controller="teacherLessonController" title="teacher's lesson" ng-init="init()">
+    <ion-header-bar class="bar-stable bar-header center" style="background-color:#3cd5af;">
+        <button class="button button-icon icon ion-android-arrow-back" ng-click="go_back()"></button>
+        <div class="h1 title">{{showData.firstName}}'sLesson</div>
+    </ion-header-bar>
+
+        <ion-content>
+
+        <ion-list>
+            <div class="list">
+            <div ng-repeat="data in showData.lesson" >
+              <a class="item item-avatar" ng-click="lessonDetail(data)">
+                <img src="{{setPicture(data.subject)}}">
+                    <h2>{{data.subject}} - {{data.level}}</h2>
+                    <p>{{data.description}}</p>
+                </a>
+            </div>
+            </div>
+        </ion-list>
+
+      </ion-content>
+</ion-view>
