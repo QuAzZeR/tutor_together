@@ -3,6 +3,7 @@ angular.module('profile',[]).controller("ProfileController",function($scope,$loc
       $http.post(Url+"/profile",UserLoginService.getInfoForRegister()).then(function(response){      
         $scope.showData = response.data;
          console.log($scope.showData.isTutor); 
+         console.log($scope.showData)
         UserInfoService.setInfo(response.data);
         $scope.showData.teach = ""
         for(var i = 0; i < $scope.showData.teach_subjects.length ;i++){

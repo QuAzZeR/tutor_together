@@ -55,7 +55,7 @@ angular.module('register',[]).controller('RegisterController', function($scope,U
     profileData.authen = {site: tmp.site, id : tmp.id};
     profileData.isTutor = ($scope.choice.select_choice == "teacher") ? true : false;
     profileData.tel = phone;
-    profileData.position = latlngService.getLatLng();
+    profileData.position = [latlngService.getLatLng()];
     tmp=[]
     var count = 0;
     for (var i=0; i<4; i++) {

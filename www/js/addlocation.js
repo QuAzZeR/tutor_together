@@ -23,9 +23,9 @@ angular.module('addlocation',['ionic']).controller('addLocationController', func
         $scope.centerOnMe();
     }
     $scope.saveDetails = function(){
-        position = {latitude:$scope.map.center.lat(),longitude:$scope.map.center.lng()};
+        position = {latitude:$scope.map.center.lat(),longtitude:$scope.map.center.lng()};
         latlngService.setLatLng(position);
-        $location.path('/register')
+        $location.url('/register')
     }
     $scope.centerOnMe = function() {
         if(!$scope.map) {

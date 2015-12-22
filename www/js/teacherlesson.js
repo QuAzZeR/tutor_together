@@ -37,5 +37,6 @@ angular.module('teacherlesson',[]).controller("teacherLessonController",function
   $scope.go_back = function(){
     window.history.back();
     
+    
   }
 });

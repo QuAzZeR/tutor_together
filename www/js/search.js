@@ -60,6 +60,7 @@ angular.module('search',[])
   $scope.teacherDetails = function(teacher){
     teacherDetailService.setTeacher(teacher);
     $location.url("/teacherprofile")
+    console.log($location.url())
   }
   $scope.init=function(){
     $scope.searchTeacher('');
@@ -133,10 +134,9 @@ angular.module('search',[])
       markers = []
        var map = new google.maps.Map(document.getElementById("searchmap"),
         mapOptions);
-       $scope.teacher=[]
+       $scope.teacher={}
        $http.post(Url+"/searchbymap").then(function(response){
           $scope.teacher=response.data;
-          
           
           for(i=0;i<$scope.teacher.length;i++)
            {
@@ -160,12 +160,19 @@ angular.module('search',[])
                     index: i
 
                 });
-                markers[i].addListener('click',$scope.teacherDetail);
+                markers[i].addListener('click',function(){
+                    teacherDetailService.setTeacher($scope.teacher[this.index]);
+                    console.log($scope.teacher[this.index])
+                    $location.url("/teacherprofile")
+                    console.log($location.url());
+                });    
             }
             //console.log($scope.teacher)
             $scope.map = map;
             $scope.centerOnMe();
+            
            })
+            console.log(markers)
     
     }
     
@@ -188,11 +195,9 @@ angular.module('search',[])
         alert('Unable to get location: ' + error.message);
         });
     };
-    $scope.teacherDetail = function(){
+    teacherDetail = function(){
       //console.log(this.index)
-      teacherDetailService.setTeacher($scope.teacher[this.index]);
-      console.log($scope.teacher[this.index])
-      $location.path('/teacherprofile')
+      
     }
 });
 
